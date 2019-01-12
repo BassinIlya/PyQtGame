@@ -94,6 +94,7 @@ class MyWidget(QMainWindow, Ui_MainWindow):
         self.exitButton.clicked.connect(self.exit)
         self.food = 0
         self.speed = 100
+        self.isPaused = False
 
     def timerEvent(self, event):
         if event.timerId() == self.timer.timerId():
@@ -151,6 +152,8 @@ class MyWidget(QMainWindow, Ui_MainWindow):
             self.timer.start(self.speed, self)
 
     def keyPressEvent(self, e):
+        if e.key() == QtCore.Qt.Key_Escape:
+            self.exit()
         if not self.isPaused:
             if e.key() == QtCore.Qt.Key_W and self.direction != Direction.UP and self.direction != Direction.DOWN:
                 self.direction = Direction.UP
@@ -164,8 +167,6 @@ class MyWidget(QMainWindow, Ui_MainWindow):
                 self.pause()
         elif e.key() == QtCore.Qt.Key_P:
             self.start()
-        elif e.key() == QtCore.Qt.Key_Escape:
-            self.exit()
 
     def paintEvent(self, event):
         qp = QtGui.QPainter()
@@ -209,7 +210,6 @@ class MyWidget(QMainWindow, Ui_MainWindow):
         self.update()
 
     def start(self):
-        self.isPaused = False
         self.timer.start(self.speed, self)
         self.statusbar.showMessage('Playing')
         self.update()
@@ -218,7 +218,6 @@ class MyWidget(QMainWindow, Ui_MainWindow):
         self.timer = QtCore.QBasicTimer()
         self.snake = Snake()
         self.direction = Direction.RIGHT
-        self.isPaused = False
         self.food = 0
         self.speed = 100
 
