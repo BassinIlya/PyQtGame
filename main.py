@@ -1,4 +1,3 @@
-import sys
 from PyQt5.QtWidgets import QApplication, QMainWindow, QFrame
 from PyQt5 import QtGui, QtCore
 from snakeUI import Ui_MainWindow
@@ -157,6 +156,7 @@ class MyWidget(QMainWindow, Ui_MainWindow):
         if not self.isPaused:
             if e.key() == QtCore.Qt.Key_W and self.direction != Direction.UP and self.direction != Direction.DOWN:
                 self.direction = Direction.UP
+                print(1)
             elif e.key() == QtCore.Qt.Key_S and self.direction != Direction.DOWN and self.direction != Direction.UP:
                 self.direction = Direction.DOWN
             elif e.key() == QtCore.Qt.Key_A and self.direction != Direction.LEFT and self.direction != Direction.RIGHT:
@@ -165,8 +165,6 @@ class MyWidget(QMainWindow, Ui_MainWindow):
                 self.direction = Direction.RIGHT
             elif e.key() == QtCore.Qt.Key_P:
                 self.pause()
-        elif e.key() == QtCore.Qt.Key_P:
-            self.start()
 
     def paintEvent(self, event):
         qp = QtGui.QPainter()

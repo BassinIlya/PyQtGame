@@ -116,4 +116,3 @@ class Ui_MainWindow(object):
         self.startButton.setText(_translate("MainWindow", "Start"))
         self.resetButton.setText(_translate("MainWindow", "Reset"))
         self.exitButton.setText(_translate("MainWindow", "Exit"))
-
