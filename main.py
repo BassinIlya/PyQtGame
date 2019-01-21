@@ -3,7 +3,7 @@ from PyQt5 import QtGui, QtCore
 from snakeUI import Ui_MainWindow
 from enum import Enum
 from random import randrange
-from tkinter import *
+import sys
 
 top = []
 CELL_SIZE = 16
@@ -130,18 +130,21 @@ class MyWidget(QMainWindow, Ui_MainWindow):
         for i in range(1, len(self.snake.cellArray) - 1):
             cell_snake = self.snake.cellArray[i]
             if self.snake.x == cell_snake.x and self.snake.y == cell_snake.y:
-                self.timer.stop()
-                self.snake.isDead = True
-                top.append(self.scoreLcd.value())
-                top.sort(reverse=True)
-                try:
-                    self.firstPlayer.setText(str(top[0]) or '')
-                    self.secondPlayer.setText(str(top[1]) or '')
-                    self.thirdPlayer.setText(str(top[2]) or '')
-                    self.fourLabel.setText(str(top[3]) or '')
-                    self.fifthPlayer.setText(str(top[4]) or '')
-                except IndexError:
-                    return
+                self.gameOver()
+
+    def gameOver(self):
+        self.timer.stop()
+        self.snake.isDead = True
+        top.append(self.scoreLcd.value())
+        top.sort(reverse=True)
+        try:
+            self.firstPlayer.setText(str(top[0]) or '')
+            self.secondPlayer.setText(str(top[1]) or '')
+            self.thirdPlayer.setText(str(top[2]) or '')
+            self.fourLabel.setText(str(top[3]) or '')
+            self.fifthPlayer.setText(str(top[4]) or '')
+        except IndexError:
+            return
 
     def increaseCount(self):
         self.scoreLcd.display(self.scoreLcd.value() + 20)
@@ -156,7 +159,6 @@ class MyWidget(QMainWindow, Ui_MainWindow):
         if not self.isPaused:
             if e.key() == QtCore.Qt.Key_W and self.direction != Direction.UP and self.direction != Direction.DOWN:
                 self.direction = Direction.UP
-                print(1)
             elif e.key() == QtCore.Qt.Key_S and self.direction != Direction.DOWN and self.direction != Direction.UP:
                 self.direction = Direction.DOWN
             elif e.key() == QtCore.Qt.Key_A and self.direction != Direction.LEFT and self.direction != Direction.RIGHT:
@@ -210,6 +212,7 @@ class MyWidget(QMainWindow, Ui_MainWindow):
     def start(self):
         self.timer.start(self.speed, self)
         self.statusbar.showMessage('Playing')
+        self.startButton.setEnabled(False)
         self.update()
 
     def new_game(self):
@@ -218,6 +221,7 @@ class MyWidget(QMainWindow, Ui_MainWindow):
         self.direction = Direction.RIGHT
         self.food = 0
         self.speed = 100
+        self.startButton.setEnabled(True)
 
     def exit(self):
         self.close()
